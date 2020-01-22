@@ -1,0 +1,24 @@
+<h1>Lista de Usuarios:</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#data}}
+        <tr>
+            <th scope="row">{{id}}</th>
+            <td>{{name}}</td>
+            <td>{{age}}</td>
+            <td><a href="/update/{{id}}"><button class="btn btn-primary">Atualizar</button></a>
+                <a href="/delete/{{id}}"><button class="btn btn-danger">Deletar</button></a>
+            </td>
+        </tr>
+        {{/data}}
+    </tbody>
+</table>
+<a href="/"><button class="btn btn-primary mt-4">Voltar</button></a>

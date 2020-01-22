@@ -27,10 +27,34 @@ app.get("/insert", (req, res) => {
   res.render("insert");
 });
 
-app.post("/controllerForm", urlencodeParser, (req, res) => {
-    sql.query('insert into user (name, age) values (?,?)', [req.body.name, req.body.age])
-    console.log(req.body.name, req.body.age);
-    res.render('controllerForm', {name:req.body.name});
+app.post("/controllerform", urlencodeParser, (req, res) => {
+  sql.query("insert into user (name, age) values (?,?)", [
+    req.body.name,
+    req.body.age
+  ]);
+  res.render("controllerForm", { name: req.body.name });
+});
+
+app.get("/list/:id?", (req, res) => {
+  if (!req.params.id) {
+    sql.query("select * from user order by id asc", (err, results) => {
+      res.render("list", { data: results });
+    });
+  } else {
+    sql.query(
+      "select * from user where id=?",
+      [req.params.id],
+      (err, result) => {
+        res.render("list", { data: result });
+      }
+    );
+  }
+});
+
+
+app.get("/delete/:id", (req, res) => {
+  sql.query("delete from user where id=?", [req.params.id]);
+  res.render("delete");
 });
 
 //Start server
