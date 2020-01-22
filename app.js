@@ -7,6 +7,8 @@ const app = express();
 // Template engine
 app.engine("handlebars", handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+app.use('/css', express.static('css'));
+app.use('/js', express.static('js'));
 
 // Routes and Templates
 app.get("/", (req, res) => {
