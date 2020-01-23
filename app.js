@@ -28,10 +28,14 @@ app.get("/insert", (req, res) => {
 });
 
 app.post("/controllerform", urlencodeParser, (req, res) => {
-  sql.query("insert into user (name, age) values (?,?)", [
-    req.body.name,
-    req.body.age
-  ]);
+  try {
+    sql.query("insert into user (name, age) values (?,?)", [
+      req.body.name,
+      req.body.age
+    ]);
+  } catch (error) {
+    console.log("Error", error);
+  }
   res.render("controllerForm", { name: req.body.name });
 });
 
@@ -51,9 +55,43 @@ app.get("/list/:id?", (req, res) => {
   }
 });
 
+app.get("/update/:id", (req, res) => {
+  try {
+    sql.query(
+      "select * from user where id=?",
+      [req.params.id],
+      (err, result) => {
+        res.render("update", {
+          name: result[0].name,
+          age: result[0].age,
+          id: result[0].id
+        });
+      }
+    );
+  } catch (error) {
+    console.log("Error", error);
+  }
+});
+
+app.post("/controllerupdate", urlencodeParser, (req, res) => {
+  try {
+    sql.query("update user set name=?, age=? where id=?", [
+      req.body.name,
+      req.body.age,
+      Number(req.body.id)
+    ]);
+  } catch (error) {
+    console.log("Error", error);
+  }
+  res.render("controllerUpdate");
+});
 
 app.get("/delete/:id", (req, res) => {
-  sql.query("delete from user where id=?", [req.params.id]);
+  try {
+    sql.query("delete from user where id=?", [req.params.id]);
+  } catch (error) {
+    console.log("Id does not existe", error);
+  }
   res.render("delete");
 });
 
